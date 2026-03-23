@@ -7,48 +7,55 @@ Müslüman topluluklar için gerçek zamanlı mesajlaşma uygulamasının backen
 - Java 21 + Spring Boot 3.x
 - PostgreSQL 16
 - Spring WebSocket (STOMP)
-- Spring Security + JWT
-- Maven
+- Spring Security + JWT (jjwt)
+- Spring Data JPA / Hibernate
 - Flyway (DB migration)
-- Swagger/OpenAPI (API dokümantasyonu)
+- Maven
+- Swagger / SpringDoc OpenAPI
+- Lombok
+- MapStruct (DTO mapping)
 
 ## Mimari Kurallar
-- Clean Architecture kullan (Controller → Service → Repository)
+- Clean Architecture: Controller → Service → Repository
 - Tüm endpoint'ler için Swagger/OpenAPI dokümantasyonu yaz
-- Her entity için DTO kullan
+- Her entity için DTO kullan (Request DTO, Response DTO)
 - Exception handling GlobalExceptionHandler ile yap
 - Tüm mesajlar UTF-8 ve çoklu dil desteği olsun
-
-## Veritabanı
-- Flyway migration kullan
-- Entity isimlendirme: snake_case
-- Soft delete kullan (is_deleted flag)
 
 ## Paket Yapısı
 ```
 src/main/java/com/chatapp/
-├── config/
-├── controller/
-├── dto/
-│   ├── request/
-│   └── response/
-├── entity/
-├── exception/
-├── repository/
-├── security/
-├── service/
-│   └── impl/
-└── websocket/
+├── config/          # Security, WebSocket, CORS config
+├── controller/      # REST endpoints
+├── dto/             # Request/Response DTOs
+├── entity/          # JPA entities
+├── enums/           # Enum types
+├── exception/       # Custom exceptions + GlobalExceptionHandler
+├── mapper/          # MapStruct mappers
+├── repository/      # Spring Data JPA repositories
+├── security/        # JWT filter, provider, utils
+├── service/         # Business logic
+│   └── impl/        # Service implementations
+└── websocket/       # WebSocket handlers, interceptors
 ```
 
-## Güvenlik
-- JWT tabanlı authentication
-- BCrypt ile password hashing
-- CORS yapılandırması
-- Rate limiting
+## Veritabanı Kuralları
+- Flyway migration kullan
+- Entity isimlendirme: snake_case
+- Soft delete kullan (is_deleted flag)
+- Audit fields: created_at, updated_at, created_by
+- UUID primary keys
 
 ## API Standartları
-- RESTful endpoint'ler
-- Standart response wrapper kullan
-- Pagination desteği
-- Validation annotation'ları kullan
+- RESTful naming convention
+- Pagination: Page/Size parametreleri
+- Response wrapper: ApiResponse<T>
+- HTTP status codes doğru kullanılmalı
+- Validation: @Valid + custom validators
+
+## Güvenlik
+- BCrypt password hashing
+- JWT access + refresh token
+- CORS configuration
+- Rate limiting (opsiyonel)
+- Input sanitization
